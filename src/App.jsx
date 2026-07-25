@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
+import GridGallery from './components/GridGallery';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -15,7 +16,7 @@ export default function App() {
         <Navbar />
         <Hero />
         <Stats />
-        {/* Otras secciones irían aquí */}
+        <GridGallery />
         
         {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
