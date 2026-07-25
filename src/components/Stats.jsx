@@ -1,23 +1,23 @@
 import React from 'react';
-import { Smile, CreditCard, CalendarDays, ShieldCheck } from 'lucide-react';
+import { Laptop, Award, ShoppingBag, Building2 } from 'lucide-react';
 
 export default function Stats() {
   const statItems = [
     { 
-      icon: <Smile size={24} className="text-rose-400" strokeWidth={1.5} />, 
-      text: "500,000+ customers" 
+      icon: <Laptop size={28} className="text-blue-400" strokeWidth={2} />, 
+      text: "+500 equipos arrendados activos"
     },
     { 
-      icon: <CreditCard size={24} className="text-blue-400" strokeWidth={1.5} />, 
-      text: "Low monthly costs" 
+      icon: <Award size={28} className="text-blue-400" strokeWidth={2} />, 
+      text: "+10 años de experiencia"
     },
     { 
-      icon: <CalendarDays size={24} className="text-rose-400" strokeWidth={1.5} />, 
-      text: "Rent from 1 to 24+ months" 
+      icon: <ShoppingBag size={28} className="text-blue-400" strokeWidth={2} />, 
+      text: "+10,000 equipos vendidos"
     },
     { 
-      icon: <ShieldCheck size={24} className="text-rose-400" strokeWidth={1.5} />, 
-      text: "Grover Care available" 
+      icon: <Building2 size={28} className="text-blue-400" strokeWidth={2} />, 
+      text: "+100 empresas"
     }
   ];
 
