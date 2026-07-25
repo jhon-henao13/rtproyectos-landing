@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import Stats from './components/Stats';
 import GridGallery from './components/GridGallery';
 import LeasingCalculator from './components/LeasingCalculator';
+import EquipmentCatalog from './components/EquipmentCatalog';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Stats />
         <GridGallery />
         <LeasingCalculator />
+        <EquipmentCatalog />
         {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
       </main>
