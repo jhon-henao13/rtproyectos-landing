@@ -9,6 +9,7 @@ import ComparisonTable from './components/ComparisonTable';
 import SectorSolutions from './components/SectorSolutions';
 import ZeroParosOperativos from './components/ZeroParosOperativos';
 import TestimonialsCTA from './components/TestimonialsCTA';
+import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -32,6 +33,8 @@ export default function App() {
         {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
       </main>
+
+      <Footer />
       
       {/* El resto de tus secciones futuras irán aquí abajo */}
     </div>
