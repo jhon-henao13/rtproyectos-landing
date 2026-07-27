@@ -7,6 +7,7 @@ import LeasingCalculator from './components/LeasingCalculator';
 import EquipmentCatalog from './components/EquipmentCatalog';
 import ComparisonTable from './components/ComparisonTable';
 import SectorSolutions from './components/SectorSolutions';
+import ZeroParosOperativos from './components/ZeroParosOperativos';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <EquipmentCatalog />
         <ComparisonTable />
         <SectorSolutions />
+        <ZeroParosOperativos />
         {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
       </main>
