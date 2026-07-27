@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Check, ArrowRight } from 'lucide-react';
 import heroRightAsset from '../assets/hero-right.webp';
 
-export default function Hero() {
+export default function Hero({ onOpenModal }) {
   
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -80,10 +80,12 @@ export default function Hero() {
 
           {/* CTA BUTTON */}
           <motion.div variants={itemVariants} className="pt-6">
-            <button className="bg-brand-primary hover:bg-brand-accent text-white px-10 py-5 rounded-full font-bold text-lg flex items-center space-x-3 group shadow-2xl shadow-blue-600/20 hover:shadow-blue-600/35 hover:-translate-y-0.5 transition-all duration-300">
+
+            <button onClick={onOpenModal} className="bg-brand-primary hover:bg-brand-accent text-white px-10 py-5 rounded-full font-bold text-lg flex items-center space-x-3 group shadow-2xl shadow-blue-600/20 hover:shadow-blue-600/35 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
               <span>Solicita tu Cotización</span>
               <ArrowRight size={22} className="group-hover:translate-x-1.5 transition-transform duration-300" />
             </button>
+
           </motion.div>
         </motion.div>
 

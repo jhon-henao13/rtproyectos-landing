@@ -159,7 +159,7 @@ const catalogCategories = [
   }
 ];
 
-export default function EquipmentCatalog() {
+export default function EquipmentCatalog({ onOpenModal }) {
   // Estado para el índice activo de cada carrusel por categoría
   const [activeIndices, setActiveIndices] = useState({
     laptops: 0,
@@ -245,14 +245,16 @@ export default function EquipmentCatalog() {
                 </ul>
 
                 <div className="pt-2">
-                  <a
-                    href={cat.ctaLink}
-                    className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-accent text-white font-bold text-base px-7 py-3.5 rounded-full shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300"
+                  <button
+                    type="button"
+                    onClick={onOpenModal}
+                    className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-accent text-white font-bold text-base px-7 py-3.5 rounded-full shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                   >
                     <span>{cat.ctaText}</span>
                     <ArrowUpRight size={18} />
-                  </a>
+                  </button>
                 </div>
+                
               </div>
 
               {/* BLOQUE DE CARRUSEL DE IMÁGENES */}

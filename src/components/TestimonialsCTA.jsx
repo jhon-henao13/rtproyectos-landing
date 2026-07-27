@@ -64,7 +64,8 @@ const clientLogos = [
   { name: 'Cliente 6', src: brand6 },
 ];
 
-export default function TestimonialsCTA() {
+
+export default function TestimonialsCTA({ onOpenModal }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Autoplay del carrusel cada 6 segundos
@@ -209,13 +210,15 @@ export default function TestimonialsCTA() {
             </p>
 
             <div className="pt-2">
-              <a
-                href="#simulador"
-                className="inline-flex items-center space-x-3 bg-white text-brand-primary hover:bg-slate-100 font-extrabold text-base px-8 py-4 rounded-full shadow-2xl hover:shadow-white/20 hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
-              >
-                <span>Iniciar Proceso de Arrendamiento</span>
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </a>
+
+              <button
+                  type="button"
+                  onClick={onOpenModal}
+                  className="inline-flex items-center space-x-3 bg-white text-brand-primary hover:bg-slate-100 font-extrabold text-base px-8 py-4 rounded-full shadow-2xl hover:shadow-white/20 hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer"
+                >
+                  <span>Iniciar Proceso de Arrendamiento</span>
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </button>
             </div>
           </div>
 

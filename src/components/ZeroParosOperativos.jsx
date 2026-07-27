@@ -135,7 +135,7 @@ const slaItems = [
   }
 ];
 
-export default function ZeroParosOperativos() {
+export default function ZeroParosOperativos({ onOpenModal }) {
   return (
     <section className="w-full py-20 px-4 sm:px-6 bg-[#F8FAFC] relative overflow-hidden">
       
@@ -232,12 +232,15 @@ export default function ZeroParosOperativos() {
           transition={{ delay: 0.3 }}
           className="mt-14 text-center"
         >
-          <a
-            href="#simulador"
-            className="inline-flex items-center justify-center bg-brand-primary hover:bg-brand-accent text-white font-extrabold text-base px-10 py-4 rounded-full shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer min-w-[200px]"
-          >
-            Cotizar Ahora
-          </a>
+
+          <button
+              type="button"
+              onClick={onOpenModal}
+              className="inline-flex items-center justify-center bg-brand-primary hover:bg-brand-accent text-white font-extrabold text-base px-10 py-4 rounded-full shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer min-w-[200px]"
+            >
+              <span>Cotizar Ahora</span>
+            </button>
+
         </motion.div>
 
       </div>

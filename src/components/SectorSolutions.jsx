@@ -47,7 +47,8 @@ const SECTORS = [
   },
 ];
 
-export default function SectorSolutions() {
+
+export default function SectorSolutions({ onOpenModal }) {
   return (
     <section className="w-full py-24 px-4 sm:px-6 bg-white relative overflow-hidden">
       
@@ -105,13 +106,18 @@ export default function SectorSolutions() {
           transition={{ delay: 0.4 }}
           className="mt-14 text-center"
         >
-          <a
-            href="#simulador"
-            className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-accent text-white font-extrabold text-base px-9 py-4 rounded-full shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
-          >
-            <span>Cotizar Ahora</span>
-            <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
+          
+
+            <button
+              type="button"
+              onClick={onOpenModal}
+              className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-accent text-white font-bold text-base px-7 py-3.5 rounded-full shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+            >
+              <span>Cotizar Ahora</span>
+              <ArrowUpRight size={18} />
+            </button>
+
+            
         </motion.div>
 
       </div>

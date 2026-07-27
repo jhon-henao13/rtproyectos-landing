@@ -3,7 +3,7 @@ import { Menu, X } from 'lucide-react';
 // IMPORTA TU LOGO AQUÍ
 import logoAsset from '../assets/logopng.png';
 
-export default function Navbar() {
+export default function Navbar({ onOpenModal }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
@@ -41,7 +41,7 @@ export default function Navbar() {
 
         {/* DESKTOP CTA */}
         <div className="hidden md:block">
-          <button className="bg-brand-primary hover:bg-brand-accent text-white px-9 py-3.5 rounded-full text-sm font-bold shadow-lg shadow-blue-600/10 hover:shadow-blue-600/25 hover:-translate-y-0.5 transition-all duration-300">
+          <button onClick={onOpenModal} className="bg-brand-primary hover:bg-brand-accent text-white px-9 py-3.5 rounded-full text-sm font-bold shadow-lg shadow-blue-600/10 hover:shadow-blue-600/25 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
             Cotizar Ahora
           </button>
         </div>
@@ -65,7 +65,7 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <button className="w-full bg-brand-primary text-white py-4 rounded-xl font-bold shadow-lg mt-4">
+          <button onClick={() => { setIsOpen(false); onOpenModal(); }} className="w-full bg-brand-primary text-white py-4 rounded-xl font-bold shadow-lg mt-4 cursor-pointer">
             Cotizar Ahora
           </button>
         </div>
