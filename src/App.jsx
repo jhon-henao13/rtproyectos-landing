@@ -6,6 +6,7 @@ import GridGallery from './components/GridGallery';
 import LeasingCalculator from './components/LeasingCalculator';
 import EquipmentCatalog from './components/EquipmentCatalog';
 import ComparisonTable from './components/ComparisonTable';
+import SectorSolutions from './components/SectorSolutions';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
         <LeasingCalculator />
         <EquipmentCatalog />
         <ComparisonTable />
+        <SectorSolutions />
         {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
       </main>
