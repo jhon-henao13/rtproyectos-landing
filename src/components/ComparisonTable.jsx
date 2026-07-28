@@ -97,17 +97,17 @@ export default function ComparisonTable() {
           transition={{ duration: 0.6 }}
           className="overflow-x-auto pb-6"
         >
-          <div className="min-w-[800px] lg:min-w-full grid grid-cols-12 gap-0 items-stretch bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
+          <div className="min-w-[320px] sm:min-w-[620px] lg:min-w-full grid grid-cols-12 gap-0 items-stretch bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
             
             {/* ENCABEZADOS DE COLUMNA */}
             
             {/* Columna 1: Criterio */}
-            <div className="col-span-3 bg-slate-900 text-white p-6 flex items-end font-bold text-sm uppercase tracking-wider rounded-tl-xl">
+            <div className="col-span-3 bg-slate-900 text-white p-2 sm:p-6 flex items-end font-bold text-[10px] sm:text-sm uppercase tracking-wide rounded-tl-xl">
               <span>Criterio</span>
             </div>
 
             {/* Columna 2: RT PROYECTOS (DESTACADA) */}
-            <div className="col-span-3 bg-gradient-to-b from-blue-50/90 via-blue-50/50 to-white p-4 relative flex flex-col justify-between border-x-2 border-t-2 border-brand-primary shadow-md">
+            <div className="col-span-3 bg-gradient-to-b from-blue-50/90 via-blue-50/50 to-white p-2 sm:p-4 relative flex flex-col justify-between border-x-2 border-t-2 border-brand-primary shadow-md">
 
               <div className="text-center sm:text-left">
                 <div className="flex items-center space-x-2 justify-center">
@@ -115,24 +115,24 @@ export default function ComparisonTable() {
                     <img 
                       src={logoAsset} 
                       alt="RT Proyectos Logo" 
-                      className="h-20 w-auto object-contain" 
+                      className="h-10 sm:h-20 w-auto object-contain"
                     />
 
                 </div>
-                <p className="text-sm font-semibold text-brand-primary mt-0.5 text-center">Solución Integral Flexible</p>
+                <p className="text-[9px] sm:text-sm font-semibold text-brand-primary mt-0.5 text-center leading-tight">Solución Integral Flexible</p>
               </div>
             </div>
 
             {/* Columna 3: Compra Tradicional */}
-            <div className="col-span-3 bg-slate-100/80 p-4 flex flex-col justify-end border-r border-slate-200 text-center sm:text-left">
-              <span className="text-base font-bold text-slate-700">Compra Tradicional</span>
-              <span className="text-sm text-slate-400 font-medium">Adquisición directa</span>
+            <div className="col-span-3 bg-slate-100/80 p-2 sm:p-4 flex flex-col justify-end border-r border-slate-200 text-center sm:text-left">
+              <span className="text-[11px] sm:text-base font-bold text-slate-700 leading-tight">Compra Tradicional</span>
+              <span className="text-[9px] sm:text-sm text-slate-400 font-medium leading-tight">Adquisición directa</span>
             </div>
 
             {/* Columna 4: Integradoras Masivas */}
-            <div className="col-span-3 bg-slate-100/80 p-4 flex flex-col justify-end text-center sm:text-left rounded-tr-3xl">
-              <span className="text-base font-bold text-slate-700">Integradoras Masivas</span>
-              <span className="text-sm text-slate-400 font-medium">Paquetes Rígidos</span>
+            <div className="col-span-3 bg-slate-100/80 p-2 sm:p-4 flex flex-col justify-end text-center sm:text-left rounded-tr-3xl">
+              <span className="text-[11px] sm:text-base font-bold text-slate-700 leading-tight">Integradoras Masivas</span>
+              <span className="text-[9px] sm:text-sm text-slate-400 font-medium leading-tight">Paquetes Rígidos</span>
             </div>
 
             {/* FILAS DE DATOS */}
@@ -144,7 +144,7 @@ export default function ComparisonTable() {
                 <React.Fragment key={idx}>
                   {/* Criterio */}
                   <div
-                    className={`col-span-3 p-5 flex items-center font-bold text-slate-800 text-sm border-t border-slate-200/80 ${
+                    className={`col-span-3 p-1.5 sm:p-5 flex items-center font-bold text-slate-800 text-[10px] sm:text-sm border-t border-slate-200/80 ${
                       isEven ? 'bg-slate-50/50' : 'bg-white'
                     } ${isLast ? 'rounded-bl-3xl' : ''}`}
                   >
@@ -153,36 +153,36 @@ export default function ComparisonTable() {
 
                   {/* Celda RT Proyectos (Destacada) */}
                   <div
-                    className={`col-span-3 p-5 flex items-start space-x-2.5 border-t border-x-2 border-brand-primary/20 bg-blue-50/30 ${
+                    className={`col-span-3 p-1.5 sm:p-5 flex items-start space-x-2.5 border-t border-x-2 border-brand-primary/20 bg-blue-50/30 ${
                       isLast ? 'border-b-2 border-brand-primary rounded-bb-2xl' : ''
                     }`}
                   >
-                    <CheckCircle2 size={18} className="text-brand-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-sm font-extrabold text-brand-navy leading-snug">
+                    <CheckCircle2 size={14} className="sm:w-[18px] sm:h-[18px] text-brand-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-[10px] sm:text-sm font-extrabold text-brand-navy leading-snug">
                       {row.rt}
                     </span>
                   </div>
 
                   {/* Celda Compra Tradicional */}
                   <div
-                    className={`col-span-3 p-5 flex items-start space-x-2 border-t border-r border-slate-200/80 ${
+                    className={`col-span-3 p-1.5 sm:p-5 flex items-start space-x-2 border-t border-r border-slate-200/80 ${
                       isEven ? 'bg-slate-50/30' : 'bg-white'
                     }`}
                   >
-                    <XCircle size={16} className="text-slate-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm font-medium text-slate-500 leading-snug">
+                    <XCircle size={13} className="sm:w-[16px] sm:h-[16px] text-slate-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-[10px] sm:text-sm font-medium text-slate-500 leading-snug">
                       {row.traditional}
                     </span>
                   </div>
 
                   {/* Celda Integradoras Masivas */}
                   <div
-                    className={`col-span-3 p-5 flex items-start space-x-2 border-t border-slate-200/80 ${
+                    className={`col-span-3 p-1.5 sm:p-55 flex items-start space-x-2 border-t border-slate-200/80 ${
                       isEven ? 'bg-slate-50/30' : 'bg-white'
                     } ${isLast ? 'rounded-br-3xl' : ''}`}
                   >
-                    <XCircle size={16} className="text-slate-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm font-medium text-slate-500 leading-snug">
+                    <XCircle size={13} className="sm:w-[16px] sm:h-[16px] text-slate-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-[10px] sm:text-sm font-medium text-slate-500 leading-snug">
                       {row.integrators}
                     </span>
                   </div>
