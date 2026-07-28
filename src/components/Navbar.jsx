@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 // IMPORTA TU LOGO AQUÍ
 import logoAsset from '../assets/logopng.png';
 
 export default function Navbar({ onOpenModal }) {
   const [isOpen, setIsOpen] = useState(false);
+
+
 
   const navLinks = [
     { name: 'Catálogo', href: '#catalogo' },
@@ -47,7 +49,10 @@ export default function Navbar({ onOpenModal }) {
         </div>
 
         {/* MOBILE HAMBURGER */}
-        <button className="md:hidden text-brand-navy" onClick={() => setIsOpen(!isOpen)}>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden h-12 w-12 rounded-full bg-white shadow-lg border border-slate-200 flex items-center justify-center text-brand-navy active:scale-95 transition-all duration-300"
+        >
           {isOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>

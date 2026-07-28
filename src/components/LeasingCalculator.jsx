@@ -138,7 +138,7 @@ export default function LeasingCalculator() {
               {/* Field 2: Precio del Equipo */}
               <div className="flex flex-col space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-600">
-                  Precio unitario estimado
+                  Precio unitario estimado por equipo (venta)
                 </label>
                 <select
                   value={precioEquipo}
@@ -184,7 +184,6 @@ export default function LeasingCalculator() {
 
             </div>
             
-
           </form>
 
           {/* DESPLIEGUE DE RESULTADOS EN TIEMPO REAL (En la misma página) */}

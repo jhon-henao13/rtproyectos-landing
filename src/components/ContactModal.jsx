@@ -46,6 +46,7 @@ export default function ContactModal({ isOpen, onClose }) {
     email: '',
     telefono: '',
     industria: 'Corporativo',
+    mensaje: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -83,7 +84,7 @@ export default function ContactModal({ isOpen, onClose }) {
     // Reiniciar estado tras cerrar
     setTimeout(() => {
       setIsSubmitted(false);
-      setFormData({ nombre: '', email: '', telefono: '', industria: 'Corporativo' });
+      setFormData({ nombre: '', email: '', telefono: '', industria: 'Corporativo', mensaje: '' });
     }, 300);
   };
 
@@ -142,26 +143,26 @@ export default function ContactModal({ isOpen, onClose }) {
               </div>
 
               {/* Formulario */}
+              {/* Formulario */}
               <form onSubmit={handleSubmit} className="space-y-4">
                 
-                {/* Campo: Nombre */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Nombre
-                  </label>
-                  <input
-                    type="text"
-                    name="nombre"
-                    required
-                    placeholder="Ismael Lopez"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm"
-                  />
-                </div>
-
-                {/* Grid 2 Columnas: Email e Industria */}
+                {/* Grid Fila 1: Nombre (Izquierda) y Email (Derecha) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Nombre
+                    </label>
+                    <input
+                      type="text"
+                      name="nombre"
+                      required
+                      placeholder="Ismael Lopez"
+                      value={formData.nombre}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Email de empresa
@@ -176,46 +177,62 @@ export default function ContactModal({ isOpen, onClose }) {
                       className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm"
                     />
                   </div>
-
-                    <div>
-                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                          Teléfono
-                        </label>
-                        <PhoneInput
-                            international
-                            defaultCountry="MX"
-                            placeholder="Ingresa tu teléfono"
-                            value={formData.telefono}
-                            onChange={(value) => setFormData((prev) => ({ ...prev, telefono: value || '' }))}
-                            className="phone-input-custom"
-                        />
-                    </div>
-                  
                 </div>
 
-                {/* Campo: Industria */}
+                {/* Grid Fila 2: Teléfono (Izquierda) e Industria (Derecha) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Teléfono
+                    </label>
+                    <PhoneInput
+                      international
+                      defaultCountry="MX"
+                      placeholder="Ingresa tu teléfono"
+                      value={formData.telefono}
+                      onChange={(value) => setFormData((prev) => ({ ...prev, telefono: value || '' }))}
+                      className="phone-input-custom"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Industria / Sector
+                    </label>
+                    <select
+                      name="industria"
+                      value={formData.industria}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm cursor-pointer"
+                    >
+                      <option value="Corporativo">Corporativo</option>
+                      <option value="PyME">PyME</option>
+                      <option value="Clínica">Clínica / Salud</option>
+                      <option value="Inmobiliaria">Inmobiliaria</option>
+                      <option value="Despacho">Despacho / Consultoría</option>
+                      <option value="Call Center">Call Center</option>
+                      <option value="Otros">Otros</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Campo Opcional Completo: ¿Qué buscas? */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Industria / Sector
+                    ¿Qué buscas? <span className="text-slate-400 font-normal lowercase">(opcional)</span>
                   </label>
-                  <select
-                    name="industria"
-                    value={formData.industria}
+                  <textarea
+                    name="mensaje"
+                    rows="2"
+                    placeholder="Cuéntanos brevemente qué equipos o requerimientos necesitas..."
+                    value={formData.mensaje}
                     onChange={handleChange}
-                    className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm cursor-pointer"
-                  >
-                    <option value="Corporativo">Corporativo</option>
-                    <option value="PyME">PyME</option>
-                    <option value="Clínica">Clínica / Salud</option>
-                    <option value="Inmobiliaria">Inmobiliaria</option>
-                    <option value="Despacho">Despacho / Consultoría</option>
-                    <option value="Call Center">Call Center</option>
-                    <option value="Otros">Otros</option>
-                  </select>
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm resize-none"
+                  />
                 </div>
 
-                {/* Botón Principal (Estilo Rojo/Naranja de la imagen) */}
-                <div className="pt-3">
+                {/* Botón Principal */}
+                <div className="pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}

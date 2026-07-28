@@ -42,7 +42,7 @@ const slaItems = [
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 rounded-full bg-brand-primary text-white flex items-center justify-center text-[10px] animate-pulse">●</div>
-            <span className="text-brand-navy font-bold">Entrega e Instalación (24-48h)</span>
+            <span className="text-brand-navy font-bold">Entrega e Instalación 3-7 días</span>
           </div>
         </div>
       </div>
@@ -71,12 +71,13 @@ const slaItems = [
       </div>
     )
   },
+
   {
     id: 'soporte',
     badge: 'RESPUESTA 24/7',
     title: 'Soporte Cuando lo Necesitas',
-    problema: 'Falla la conectividad o el software a mitad de jornada y tu equipo de TI interno está saturado.',
-    slaAccion: 'Nuestro soporte responde de inmediato (remoto o presencial) para diagnosticar y solucionar el problema sin detener tu operación.',
+    problema: 'Falla el disco duro, el sistema operativo, hay errores de hardware o fallas internas como memoria a mitad de jornada.',
+    slaAccion: 'Nuestro soporte responde de inmediato (remoto o presencial) para diagnosticar y solucionar fallas de sistema, componentes o errores críticos sin detener tu operación.',
     linkText: 'Conocer Canales de Soporte',
     renderMockup: () => (
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 w-full space-y-3 text-xs">
@@ -90,17 +91,19 @@ const slaItems = [
             </div>
             <div>
               <p className="font-bold text-brand-navy">Mesa de Ayuda SLA</p>
-              <p className="text-[10px] text-emerald-600 font-semibold">En línea • Respuesta inmediata</p>
+              <p className="text-[10px] text-emerald-600 font-semibold">Disco, SO, Memoria y Errores</p>
             </div>
           </div>
           <Headphones size={18} className="text-brand-primary" />
         </div>
         <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[11px] text-slate-600">
-          <span className="font-semibold text-brand-navy">Diagnóstico:</span> Remoto / Presencial activo para resolver sin pausar tu operación.
+          <span className="font-semibold text-brand-navy">Cobertura:</span> Fallas de hardware interno, sistema operativo y errores críticos del equipo.
         </div>
       </div>
     )
   },
+
+  
   {
     id: 'obsolescencia',
     badge: '12, 24 O 36 MESES',
