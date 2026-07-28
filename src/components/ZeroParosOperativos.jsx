@@ -21,7 +21,6 @@ const slaItems = [
     problema: 'Contrataste 10 colaboradores para el lunes y los proveedores tradicionales tardan semanas en entregar e instalar.',
     slaAccion: 'Auditamos tu requerimiento en 15 min y entregamos la flotilla configurada e instalada en tus oficinas en 24 a 48 horas (CDMX, EDOMEX, Morelos o Querétaro).',
     linkText: 'Explorar Tiempos de Entrega',
-    // Componente visual simulado (Mockup superior)
     renderMockup: () => (
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 w-full space-y-2.5 text-xs">
         <div className="flex items-center justify-between pb-2 border-b border-slate-100">
@@ -145,7 +144,7 @@ export default function ZeroParosOperativos({ onOpenModal }) {
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Encabezado */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-3">
           <motion.h2 
             initial={{ opacity: 0, y: -15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -166,8 +165,8 @@ export default function ZeroParosOperativos({ onOpenModal }) {
           </motion.p>
         </div>
 
-        {/* Grilla de Tarjetas (4 Columnas) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        {/* Carrusel en móvil / Grilla en Desktop */}
+        <div className="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-6 pt-2 px-1 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {slaItems.map((item, index) => (
             <motion.div
               key={item.id}
@@ -175,7 +174,8 @@ export default function ZeroParosOperativos({ onOpenModal }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="bg-[#F5F5F1] hover:bg-[#EDEDE7] transition-colors duration-300 rounded-[28px] p-6 flex flex-col justify-between border border-slate-200/70 shadow-sm hover:shadow-md group"
+              
+              className="w-[380px] sm:w-[580px] lg:w-auto snap-center bg-[#F5F5F1] hover:bg-[#EDEDE7] transition-colors duration-300 rounded-[28px] p-6 flex flex-col justify-between border border-slate-200/70 shadow-sm hover:shadow-md group shrink-0"
             >
               <div>
                 {/* Visual Widget Mockup */}
@@ -184,63 +184,61 @@ export default function ZeroParosOperativos({ onOpenModal }) {
                 </div>
 
                 {/* Badge Superior */}
-                <div className="inline-block bg-white text-brand-primary text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-200 mb-3 shadow-xs">
+                <div className="flex justify-center inline-block bg-white text-brand-primary text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-200 mb-3 shadow-xs">
                   {item.badge}
                 </div>
 
                 {/* Título de la tarjeta */}
-                <h3 className="text-lg font-bold text-brand-navy mb-4 leading-snug group-hover:text-brand-primary transition-colors">
+                <h3 className="text-lg font-bold text-brand-navy mb-4 leading-snug group-hover:text-brand-primary transition-colors text-center">
                   {item.title}
                 </h3>
 
                 {/* Sección: El Problema */}
                 <div className="mb-4 bg-white/60 p-3 rounded-xl border border-slate-200/50">
-                  <p className="text-[11px] font-bold text-red-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <p className="text-[11px] font-bold text-red-500 uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
                     <AlertTriangle size={12} /> El Problema
                   </p>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  <p className="text-xs text-slate-600 leading-relaxed font-medium text-center">
                     {item.problema}
                   </p>
                 </div>
 
                 {/* Sección: SLA en Acción */}
-                <div className="mb-6">
-                  <p className="text-[11px] font-bold text-brand-primary uppercase tracking-wider mb-1 flex items-center gap-1">
+                <div className="mb-1">
+                  <p className="text-[11px] font-bold text-brand-primary uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
                     <CheckCircle2 size={12} /> SLA en Acción
                   </p>
-                  <p className="text-xs text-slate-800 leading-relaxed font-semibold">
+                  <p className="text-xs text-slate-800 leading-relaxed font-semibold text-center">
                     {item.slaAccion}
                   </p>
                 </div>
-              </div>
-
-              {/* Footer Link opcional tipo tarjeta SaaS */}
-              <div className="pt-2 border-t border-slate-300/40 flex items-center justify-between text-xs font-bold text-slate-700 group-hover:text-brand-primary transition-colors cursor-pointer">
-                <span>{item.linkText}</span>
-                <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
               </div>
 
             </motion.div>
           ))}
         </div>
 
-        {/* Botón Principal CTA (Idéntico al de la imagen) */}
+        {/* Indicador visual táctil móvil (Swipe hint opcional pero muy moderno) */}
+        <div className="flex lg:hidden justify-center items-center gap-1.5 mt-2 text-xs font-semibold text-slate-400">
+          <span>Desliza para ver más</span>
+          <span className="animate-bounce">← →</span>
+        </div>
+
+        {/* Botón Principal CTA */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="mt-14 text-center"
+          className="mt-10 sm:mt-14 text-center"
         >
-
           <button
               type="button"
               onClick={onOpenModal}
               className="inline-flex items-center justify-center bg-brand-primary hover:bg-brand-accent text-white font-extrabold text-base px-10 py-4 rounded-full shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer min-w-[200px]"
             >
               <span>Cotizar Ahora</span>
-            </button>
-
+          </button>
         </motion.div>
 
       </div>
