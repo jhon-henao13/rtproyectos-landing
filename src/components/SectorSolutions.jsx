@@ -83,14 +83,14 @@ export default function SectorSolutions({ onOpenModal }) {
         <div className="space-y-8 max-w-4xl mx-auto">
           
           {/* Fila Superior: 3 Círculos */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-items-center items-center">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8 justify-items-center items-start">
             {SECTORS.filter((s) => s.row === 'top').map((sector, index) => (
               <SectorBubble key={sector.id} sector={sector} index={index} />
             ))}
           </div>
 
           {/* Fila Inferior: 2 Círculos Centrados */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12">
+          <div className="flex justify-center items-start gap-5 sm:gap-12">
             {SECTORS.filter((s) => s.row === 'bottom').map((sector, index) => (
               <SectorBubble key={sector.id} sector={sector} index={index + 3} />
             ))}
@@ -138,7 +138,7 @@ function SectorBubble({ sector, index }) {
       className="group relative flex flex-col items-center cursor-pointer"
     >
       {/* Círculo Principal con Imagen */}
-      <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full overflow-hidden shadow-xl border-4 border-white group-hover:border-brand-primary transition-all duration-500 transform group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-blue-500/25">
+      <div className="relative w-28 h-28 xs:w-32 xs:h-32 sm:w-56 sm:h-56 md:w-60 md:h-60 rounded-full overflow-hidden shadow-xl border-4 border-white group-hover:border-brand-primary transition-all duration-500 transform group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-blue-500/25">
         
         {/* Imagen de Fondo */}
         <img
@@ -166,8 +166,8 @@ function SectorBubble({ sector, index }) {
 
       {/* Etiqueta de Título Fija Móvil/Escritorio (Fuera de la burbuja para vista normal) */}
       <div className="mt-3 text-center group-hover:opacity-0 transition-opacity duration-200">
-        <span className="text-xs sm:text-sm font-bold text-slate-700 tracking-wide flex items-center justify-center space-x-1.5">
-          <IconComponent size={14} className="text-brand-primary" />
+        <span className="text-[10px] sm:text-sm font-bold text-slate-700 tracking-wide flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-1.5">
+          <IconComponent size={12} className="text-brand-primary sm:w-[14px] sm:h-[14px]" />
           <span>{sector.title}</span>
         </span>
       </div>
