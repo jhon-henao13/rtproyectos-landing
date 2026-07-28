@@ -132,11 +132,11 @@ export default function ContactModal({ isOpen, onClose }) {
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                  Trabaja con nosotros
+                  Cotiza tus equipos
                 </h3>
 
-                {/* Banner Rojo / Destacado según la referencia gráfica */}
-                <div className="w-full bg-blue-500 text-white text-xs sm:text-sm font-semibold py-2 px-4 rounded-xl shadow-sm">
+                {/* Banner Blue / Destacado según la referencia gráfica */}
+                <div className="w-full text-black text-xs sm:text-sm font-semibold py-2 px-4 rounded-xl shadow-sm">
                   Reserva una cita usando tu correo de empresa para agilizar el proceso.
                 </div>
               </div>

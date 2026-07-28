@@ -111,7 +111,6 @@ export default function ComparisonTable() {
 
               <div className="text-center sm:text-left">
                 <div className="flex items-center space-x-2 justify-center">
-                  <span className="text-base font-extrabold text-brand-navy tracking-tight">RT Proyectos</span>
 
                     <img 
                       src={logoAsset} 

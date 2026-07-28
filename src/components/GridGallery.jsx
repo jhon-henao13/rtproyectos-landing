@@ -55,12 +55,7 @@ export default function GridGallery() {
               />
 
               {/* Gradient Overlay superior sutil para dar profundidad */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/10 opacity-60 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"></div>
-
-              {/* Botón flotante interactivo (Aparece en la esquina superior derecha al hacer Hover) */}
-              <div className="absolute top-5 right-5 z-10 w-11 h-11 rounded-full bg-white/80 backdrop-blur-md border border-white/60 flex items-center justify-center text-slate-800 shadow-md group-hover:bg-brand-primary group-hover:text-white group-hover:border-brand-primary group-hover:scale-110 transition-all duration-300">
-                <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/10 opacity-60 group-hover:opacity-40 transition-opacity duration-500 pointer-events-none"></div>              
 
               {/* Borde brillante al pasar el cursor */}
               <div className="absolute inset-0 rounded-md md:rounded-lg border-2 border-transparent group-hover:border-white/40 transition-colors duration-500 pointer-events-none z-20"></div>

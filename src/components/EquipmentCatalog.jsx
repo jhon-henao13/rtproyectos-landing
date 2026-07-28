@@ -20,7 +20,7 @@ const catalogCategories = [
         id: 1,
         modelName: 'Espacio de Trabajo Ejecutivo',
         brand: 'ENTORNO DE OFICINA',
-        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1200&auto=format&fit=crop',
         isWorkspace: true,
       },
       {
@@ -124,37 +124,40 @@ const catalogCategories = [
     ctaText: 'Cotizar Multis',
     ctaLink: '#simulador',
     items: [
+      
       {
         id: 1,
-        modelName: 'Centro de Impresión Corporativo',
-        brand: 'ENTORNO DE OFICINA',
-        image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1200&auto=format&fit=crop',
-        isWorkspace: true,
+        modelName: 'MX-304W',
+        brand: 'Sharp',
+        image: 'https://mediaserver.goepson.com/adaptivemedia/rendition?id=71b6b9fde8ff5356b828bd2be1040df510119f75&vid=71b6b9fde8ff5356b828bd2be1040df510119f75&prid=1200Wx1200H&clid=SAPDAM&prclid=banner&assetDescr=L5590-690x460-7',
       },
       {
         id: 2,
-        modelName: 'MX-304W',
+        modelName: 'MX-5070',
         brand: 'Sharp',
-        image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://netcopiadoras.com/cdn/shop/files/1684177802_0_2048x.jpg?v=9053248166165567779',
       },
       {
         id: 3,
-        modelName: 'MX-5070',
+        modelName: 'MX-3051',
         brand: 'Sharp',
-        image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRReZNKptd1xa_9cZ-22WgYv9B-FJGv2mfR30dk43UL3vYq4DW2v_qt-4A&s=10',
       },
       {
         id: 4,
-        modelName: 'MX-3051',
-        brand: 'Sharp',
-        image: 'https://images.unsplash.com/photo-1562654501-a0ccc0fc3fb1?q=80&w=1000&auto=format&fit=crop',
-      },
-      {
-        id: 5,
         modelName: 'MX-455W',
         brand: 'Sharp',
-        image: 'https://images.unsplash.com/photo-1588702547919-26089e690ecc?q=80&w=1000&auto=format&fit=crop',
+        image: 'https://www.ricoh.es/media/Ricoh%20All-in-one%20Printers%20-%20Category%201440x680jpg_tcm77-66154.jpg',
       },
+
+      {
+        id: 5,
+        modelName: 'Centro de Impresión Corporativo',
+        brand: 'ENTORNO DE OFICINA',
+        image: 'https://images.ctfassets.net/ao073xfdpkqn/6lqpG9l1yjfTrRns62dl1W/a260ea8a598c9c188311fd9b1c168861/Lexmark-CX950se-printer-beside-conference-room-650x510.jpg',
+        isWorkspace: true,
+      },
+
     ]
   }
 ];

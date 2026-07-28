@@ -183,19 +183,7 @@ export default function LeasingCalculator() {
               </div>
 
             </div>
-
-            {/* BOTÓN DE ACCIÓN PRINCIPAL (En color naranja de alto contraste) */}
-            {/* BOTÓN DE ACCIÓN PRINCIPAL (Azul corporativo de alto impacto) */}
-            <div className="pt-2">
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-lg py-5 px-8 rounded-2xl shadow-xl shadow-blue-600/30 hover:shadow-blue-600/45 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center space-x-3 cursor-pointer"
-              >
-                <Calculator size={22} className="animate-pulse" />
-                <span>Simular Arrendamiento</span>
-                <ArrowRight size={22} />
-              </button>
-            </div>
+            
 
           </form>
 
