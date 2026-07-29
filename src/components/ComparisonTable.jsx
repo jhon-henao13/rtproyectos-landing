@@ -97,7 +97,7 @@ export default function ComparisonTable() {
           transition={{ duration: 0.6 }}
           className="overflow-x-auto pb-6"
         >
-          <div className="min-w-[320px] sm:min-w-[620px] lg:min-w-full grid grid-cols-12 gap-0 items-stretch bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
+          <div className="min-w-[620px] sm:min-w-[850px] lg:min-w-full grid grid-cols-12 gap-0 items-stretch bg-white rounded-xl shadow-xl border border-slate-200 overflow-hidden">
             
             {/* ENCABEZADOS DE COLUMNA */}
             
@@ -153,7 +153,7 @@ export default function ComparisonTable() {
 
                   {/* Celda RT Proyectos (Destacada) */}
                   <div
-                    className={`col-span-3 p-1.5 sm:p-5 flex items-start space-x-2.5 border-t border-x-2 border-brand-primary/20 bg-blue-50/30 ${
+                    className={`col-span-3 p-1.5 sm:py-4 sm:px-2 flex items-start space-x-2.5 border-t border-x-2 border-brand-primary/20 bg-blue-50/30 ${
                       isLast ? 'border-b-2 border-brand-primary rounded-bb-2xl' : ''
                     }`}
                   >
@@ -170,7 +170,7 @@ export default function ComparisonTable() {
                     }`}
                   >
                     <XCircle size={13} className="sm:w-[16px] sm:h-[16px] text-slate-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-[10px] sm:text-sm font-medium text-slate-500 leading-snug">
+                    <span className="text-[10px] sm:text-xs font-medium text-slate-500 leading-snug">
                       {row.traditional}
                     </span>
                   </div>
@@ -182,7 +182,7 @@ export default function ComparisonTable() {
                     } ${isLast ? 'rounded-br-3xl' : ''}`}
                   >
                     <XCircle size={13} className="sm:w-[16px] sm:h-[16px] text-slate-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-[10px] sm:text-sm font-medium text-slate-500 leading-snug">
+                    <span className="text-[10px] sm:text-xs font-medium text-slate-500 leading-snug">
                       {row.integrators}
                     </span>
                   </div>

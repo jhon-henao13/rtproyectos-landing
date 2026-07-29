@@ -284,6 +284,13 @@ export default function LeasingCalculator() {
                   </a>
                 </div>
 
+                {/* Leyenda aclaratoria de costos estimados */}
+                <div className="mt-6 pt-4 border-t border-slate-200/60 text-center">
+                  <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed max-w-xl mx-auto">
+                    * Nota importante: Los montos y ahorros mostrados en este simulador son <span className="font-semibold text-slate-700">estimados con fines ilustrativos</span> y no constituyen una oferta vinculante o final. Las cifras reales están sujetas a evaluación crediticia y a formalización de contrato.
+                  </p>
+                </div>
+
               </motion.div>
             )}
           </AnimatePresence>

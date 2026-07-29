@@ -45,7 +45,7 @@ export default function Hero({ onOpenModal }) {
             variants={itemVariants}
             className="text-sm font-normal uppercase tracking-[0.2em] text-slate-500"
           >
-            ARRENDAMIENTO Y VENTA DE EQUIPO DE CÓPUTO
+            ARRENDAMIENTO Y VENTA DE EQUIPO DE CÓMPUTO
           </motion.span>
           
           {/* Título Principal */}

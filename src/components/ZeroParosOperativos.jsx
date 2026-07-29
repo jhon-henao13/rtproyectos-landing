@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   CheckCircle2, 
@@ -19,7 +19,7 @@ const slaItems = [
     badge: '24 - 48 HRS',
     title: 'Entrega e Instalación Relámpago',
     problema: 'Contrataste 10 colaboradores para el lunes y los proveedores tradicionales tardan semanas en entregar e instalar.',
-    slaAccion: 'Auditamos tu requerimiento en 15 min y entregamos la flotilla configurada e instalada en tus oficinas en 24 a 48 horas (CDMX, EDOMEX, Morelos o Querétaro).',
+    slaAccion: 'Auditamos tu requerimiento en 15 min y entregamos la flotilla configurada e instalada en tus oficinas (CDMX, EDOMEX, Morelos o Querétaro).',
     linkText: 'Explorar Tiempos de Entrega',
     renderMockup: () => (
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 w-full space-y-2.5 text-xs">
@@ -138,6 +138,17 @@ const slaItems = [
 ];
 
 export default function ZeroParosOperativos({ onOpenModal }) {
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % slaItems.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + slaItems.length) % slaItems.length);
+  };
+
   return (
     <section className="w-full py-20 px-4 sm:px-6 bg-[#F8FAFC] relative overflow-hidden">
       
@@ -169,7 +180,164 @@ export default function ZeroParosOperativos({ onOpenModal }) {
         </div>
 
         {/* Carrusel en móvil / Grilla en Desktop */}
-        <div className="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-6 pt-2 px-1 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* ========================================================= */}
+        {/* VISTA MÓVIL: MAZO APILADO TIPO ACORDEÓN 3D DE PROFUNDIDAD */}
+        {/* ========================================================= */}
+        <div className="block lg:hidden relative h-[530px] w-full max-w-sm mx-auto my-6 px-2">
+          {slaItems.map((item, index) => {
+            // Calculamos el desfase respecto a la tarjeta activa
+            const diff = index - activeIndex;
+            const isPast = diff < 0;
+          
+            // Configuración visual según la posición en la pila
+            let scale = 1;
+            let translateX = 0;
+            let translateY = 0;
+            let opacity = 1;
+            let zIndex = 40 - index;
+          
+            if (diff === 0) {
+              // Tarjeta Principal al Frente
+              scale = 1;
+              translateX = 0;
+              translateY = 0;
+              opacity = 1;
+              zIndex = 40;
+            } else if (diff === 1) {
+              // 1ra Tarjeta Apilada Detrás
+              scale = 0.93;
+              translateX = 18;
+              translateY = 12;
+              opacity = 0.88;
+              zIndex = 30;
+            } else if (diff === 2) {
+              // 2da Tarjeta Apilada Detrás
+              scale = 0.86;
+              translateX = 34;
+              translateY = 24;
+              opacity = 0.65;
+              zIndex = 20;
+            } else if (diff >= 3) {
+              // 3ra Tarjeta Apilada Detrás
+              scale = 0.80;
+              translateX = 48;
+              translateY = 34;
+              opacity = 0.4;
+              zIndex = 10;
+            } else if (isPast) {
+              // Tarjetas ya deslizadas (se ocultan suavemente a la izquierda)
+              scale = 0.9;
+              translateX = -120;
+              translateY = 0;
+              opacity = 0;
+              zIndex = 0;
+            }
+          
+            return (
+              <motion.div
+                key={item.id}
+                animate={{
+                  scale,
+                  x: translateX,
+                  y: translateY,
+                  opacity,
+                  zIndex,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 260,
+                  damping: 24,
+                }}
+                onClick={() => setActiveIndex(index)}
+                className="absolute inset-x-0 top-0 bg-[#F5F5F1] rounded-[28px] p-6 flex flex-col justify-between border border-slate-300/80 shadow-xl cursor-pointer select-none origin-left"
+                style={{
+                  boxShadow: diff === 0 ? '0 20px 30px -10px rgba(15, 23, 42, 0.15)' : 'none',
+                }}
+              >
+                <div>
+                  {/* Visual Widget Mockup */}
+                  <div className="min-h-[130px] flex items-center justify-center mb-4">
+                    {item.renderMockup()}
+                  </div>
+              
+                  {/* Badge Superior */}
+                  <div className="flex justify-center mb-2">
+                    <span className="bg-white text-brand-primary text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-200 shadow-xs">
+                      {item.badge}
+                    </span>
+                  </div>
+              
+                  {/* Título */}
+                  <h3 className="text-lg font-bold text-brand-navy mb-3 leading-snug text-center">
+                    {item.title}
+                  </h3>
+              
+                  {/* El Problema */}
+                  <div className="mb-3 bg-white/70 p-2.5 rounded-xl border border-slate-200/60">
+                    <p className="text-[10px] font-bold text-red-500 uppercase tracking-wider mb-0.5 flex items-center justify-center gap-1">
+                      <AlertTriangle size={12} /> El Problema
+                    </p>
+                    <p className="text-xs text-slate-600 leading-relaxed font-medium text-center">
+                      {item.problema}
+                    </p>
+                  </div>
+              
+                  {/* SLA en Acción */}
+                  <div>
+                    <p className="text-[10px] font-bold text-brand-primary uppercase tracking-wider mb-0.5 flex items-center justify-center gap-1">
+                      <CheckCircle2 size={12} /> SLA en Acción
+                    </p>
+                    <p className="text-xs text-slate-800 leading-relaxed font-semibold text-center">
+                      {item.slaAccion}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+        
+        {/* Controles táctiles/puntos e indicador de navegación para Móvil */}
+        <div className="flex lg:hidden flex-col items-center gap-3 mb-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-xs text-slate-700 font-bold flex items-center justify-center hover:bg-slate-50 active:scale-95 transition-all"
+              aria-label="Anterior"
+            >
+              ←
+            </button>
+            <div className="flex gap-1.5 px-2">
+              {slaItems.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveIndex(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    activeIndex === idx ? 'w-6 bg-brand-primary' : 'w-2 bg-slate-300'
+                  }`}
+                  aria-label={`Ir a tarjeta ${idx + 1}`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="w-9 h-9 rounded-full bg-white border border-slate-200 shadow-xs text-slate-700 font-bold flex items-center justify-center hover:bg-slate-50 active:scale-95 transition-all"
+              aria-label="Siguiente"
+            >
+              →
+            </button>
+          </div>
+          <span className="text-[11px] font-medium text-slate-400">
+            Toca o usa las flechas para explorar ({activeIndex + 1} de {slaItems.length})
+          </span>
+        </div>
+            
+        {/* ========================================================= */}
+        {/* VISTA DESKTOP: GRILLA CONTINUA DE 4 COLUMNAS (Sigue intacta)*/}
+        {/* ========================================================= */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-6 pt-2">
           {slaItems.map((item, index) => (
             <motion.div
               key={item.id}
@@ -177,26 +345,23 @@ export default function ZeroParosOperativos({ onOpenModal }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
-              
-              className="w-[380px] sm:w-[580px] lg:w-auto snap-center bg-[#F5F5F1] hover:bg-[#EDEDE7] transition-colors duration-300 rounded-[28px] p-6 flex flex-col justify-between border border-slate-200/70 shadow-sm hover:shadow-md group shrink-0"
+              className="bg-[#F5F5F1] hover:bg-[#EDEDE7] transition-colors duration-300 rounded-[28px] p-6 flex flex-col justify-between border border-slate-200/70 shadow-xs hover:shadow-md group"
             >
               <div>
-                {/* Visual Widget Mockup */}
                 <div className="min-h-[140px] flex items-center justify-center mb-6">
                   {item.renderMockup()}
                 </div>
-
-                {/* Badge Superior */}
-                <div className="flex justify-center inline-block bg-white text-brand-primary text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-200 mb-3 shadow-xs">
-                  {item.badge}
+          
+                <div className="flex justify-center mb-3">
+                  <span className="bg-white text-brand-primary text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-slate-200 shadow-xs">
+                    {item.badge}
+                  </span>
                 </div>
-
-                {/* Título de la tarjeta */}
+          
                 <h3 className="text-lg font-bold text-brand-navy mb-4 leading-snug group-hover:text-brand-primary transition-colors text-center">
                   {item.title}
                 </h3>
-
-                {/* Sección: El Problema */}
+          
                 <div className="mb-4 bg-white/60 p-3 rounded-xl border border-slate-200/50">
                   <p className="text-[11px] font-bold text-red-500 uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
                     <AlertTriangle size={12} /> El Problema
@@ -205,8 +370,7 @@ export default function ZeroParosOperativos({ onOpenModal }) {
                     {item.problema}
                   </p>
                 </div>
-
-                {/* Sección: SLA en Acción */}
+          
                 <div className="mb-1">
                   <p className="text-[11px] font-bold text-brand-primary uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
                     <CheckCircle2 size={12} /> SLA en Acción
@@ -216,15 +380,8 @@ export default function ZeroParosOperativos({ onOpenModal }) {
                   </p>
                 </div>
               </div>
-
             </motion.div>
           ))}
-        </div>
-
-        {/* Indicador visual táctil móvil (Swipe hint opcional pero muy moderno) */}
-        <div className="flex lg:hidden justify-center items-center gap-1.5 mt-2 text-xs font-semibold text-slate-400">
-          <span>Desliza para ver más</span>
-          <span className="animate-bounce">← →</span>
         </div>
 
         {/* Botón Principal CTA */}
