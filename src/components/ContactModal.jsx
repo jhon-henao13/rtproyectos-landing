@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BarChart2, Calendar, CheckCircle, Loader2 } from 'lucide-react';
 
@@ -51,6 +51,36 @@ export default function ContactModal({ isOpen, onClose }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+
+  const [isScheduled, setIsScheduled] = useState(false);
+
+  // Escuchador global de eventos de Calendly (Truco postMessage)
+  useEffect(() => {
+    const handleCalendlyEvent = (e) => {
+      // Validar que el mensaje venga de Calendly y que contenga un evento
+      if (e.origin && e.origin.includes('calendly.com') && e.data && e.data.event) {
+        if (e.data.event === 'calendly.event_scheduled') {
+          console.log('✅ Evento detectado: Cita agendada con éxito en Calendly');
+
+          // OPCIÓN A: Si tienes una página de gracias independiente (ej. /gracias o /thank-you)
+          // window.location.href = '/gracias'; 
+
+          // OPCIÓN B: Disparar evento a Google Tag Manager / Analytics / Meta Pixel
+          if (window.gtag) {
+            window.gtag('event', 'conversion', { send_to: 'AGENDAMIENTO_CALENDLY' });
+          }
+
+          // Mostrar la vista de confirmación/gracias dentro del modal
+          setIsScheduled(true);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleCalendlyEvent);
+    return () => window.removeEventListener('message', handleCalendlyEvent);
+  }, []);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -251,8 +281,9 @@ export default function ContactModal({ isOpen, onClose }) {
 
               </form>
             </div>
-          ) : (
-            /* ================= VISTA 2: GRACIAS + AGENDAMIENTO CALENDLY ================= */
+            
+          ) : !isScheduled ? (
+            /* ================= VISTA 2: AGENDAMIENTO CALENDLY ================= */
             <div className="p-6 sm:p-8 text-center space-y-4">
               <div className="inline-flex p-3 bg-emerald-50 text-emerald-600 rounded-full mb-1">
                 <CheckCircle size={36} />
@@ -260,22 +291,51 @@ export default function ContactModal({ isOpen, onClose }) {
 
               <div className="space-y-2 max-w-xl mx-auto">
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                  ¡Todo Listo! Tu Solicitud de Cotización de Cómputo Está en Proceso
+                  ¡Datos Recibidos! Elige la Fecha y Hora para tu Asesoría
                 </h3>
                 <p className="text-slate-600 text-xs sm:text-sm font-medium">
-                  Para evitar esperas telefónicas, elige de una vez el día y hora que mejor se adapten a tu agenda en el calendario de abajo.
+                  Selecciona en el calendario de abajo el espacio que mejor se adapte a tu agenda.
                 </p>
               </div>
 
-              {/* Calendly Widget / Embedded Iframe */}
-              <div className="w-full h-[460px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner">
+              {/* Contenedor Iframe con la URL real de Calendly */}
+              <div className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner">
                 <iframe
-                  src="https://calendly.com/rtproyectos/cotizacion?embed_domain=rtproyectos.com&embed_type=Inline"
+                  src="https://calendly.com/ventasrtproyectos/30min?embed_domain=rtproyectos.com&embed_type=Inline&primary_color=1f40af"
                   width="100%"
                   height="100%"
                   frameBorder="0"
                   title="Agendar llamada con Ejecutivo"
                 />
+              </div>
+            </div>
+          ) : (
+            /* ================= VISTA 3: THANK YOU SCREEN (POST AGENDAMIENTO) ================= */
+            <div className="p-8 sm:p-12 text-center space-y-6">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full shadow-lg shadow-emerald-500/20 animate-bounce">
+                <CheckCircle size={48} strokeWidth={2.5} />
+              </div>
+
+              <div className="space-y-3 max-w-lg mx-auto">
+                <span className="text-xs font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 inline-block">
+                  Cita Confirmada
+                </span>
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+                  ¡Gracias por agendar con RT Proyectos!
+                </h3>
+                <p className="text-slate-600 text-sm font-medium leading-relaxed">
+                  Hemos enviado los detalles de la reunión y la invitación a tu correo electrónico. Un ejecutivo de nuestro equipo se conectará puntualmente a la sesión.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="w-full sm:w-auto bg-brand-navy hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg transition-all duration-300 text-sm cursor-pointer"
+                >
+                  Entendido / Cerrar
+                </button>
               </div>
             </div>
           )}
