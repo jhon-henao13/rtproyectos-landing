@@ -30,10 +30,27 @@ export default function App() {
         <Stats />
         <GridGallery />
         <LeasingCalculator />
-        <EquipmentCatalog onOpenModal={openModal} />
-        <ComparisonTable />
-        <SectorSolutions onOpenModal={openModal} />
-        <ZeroParosOperativos onOpenModal={openModal} />
+        
+        {/* Agrega id="catalogo" aquí */}
+        <div id="catalogo">
+          <EquipmentCatalog onOpenModal={openModal} />
+        </div>
+
+        {/* Agrega id="beneficios" aquí */}
+        <div id="beneficios">
+          <ComparisonTable />
+        </div>
+
+        {/* Agrega id="cobertura" aquí */}
+        <div id="cobertura">
+          <SectorSolutions onOpenModal={openModal} />
+        </div>
+
+        {/* Agrega id="faq" aquí */}
+        <div id="faq">
+          <ZeroParosOperativos onOpenModal={openModal} />
+        </div>
+
         <TestimonialsCTA onOpenModal={openModal} />
         
         {/* Botón WhatsApp Global */}

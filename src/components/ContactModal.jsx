@@ -90,22 +90,37 @@ export default function ContactModal({ isOpen, onClose }) {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const payload = {
+      ...formData,
+      fecha: new Date().toISOString(),
+      origen: 'Landing Page RT Proyectos',
+    };
+
     try {
-      // Reemplaza esta URL con el endpoint / Webhook de Coudibot CRM
-      await fetch('https://api.coudibot.com/v1/leads', {
+      // 1. Envío principal a Google Sheets (Guarda en la hoja y dispara el correo a ventasrtproyectos@gmail.com)
+      await fetch('https://script.google.com/macros/s/AKfycbz3wGlFC9hlkMFVwjrIJyrBCz5BShUTuP9nez_Ouj8XAzVUCVELafHhs4Ah46jDJ5aq/exec', {
         method: 'POST',
+        mode: 'no-cors', // Evita problemas de CORS con Google Apps Script
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          fecha: new Date().toISOString(),
-          origen: 'Landing Page RT Proyectos',
-        }),
+        body: JSON.stringify(payload),
       });
+
+      // 2. Envío secundario en segundo plano a Coudibot CRM (Si falla, no bloquea al usuario)
+      try {
+        await fetch('https://api.coudibot.com/v1/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch (crmError) {
+        console.log('Coudibot CRM sincronizado en modo local o pendiente');
+      }
+
     } catch (error) {
-      console.log('Envío registrado localmente (Fallback Coudibot):', formData);
+      console.log('Error en registro:', error);
     } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
+      setIsSubmitted(true); // Pasa automáticamente a la vista del Calendly
     }
   };
 
@@ -291,7 +306,7 @@ export default function ContactModal({ isOpen, onClose }) {
 
               <div className="space-y-2 max-w-xl mx-auto">
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                  ¡Datos Recibidos! Elige la Fecha y Hora para tu Asesoría
+                  Elige la Fecha y Hora para tu Asesoría
                 </h3>
                 <p className="text-slate-600 text-xs sm:text-sm font-medium">
                   Selecciona en el calendario de abajo el espacio que mejor se adapte a tu agenda.
@@ -299,15 +314,17 @@ export default function ContactModal({ isOpen, onClose }) {
               </div>
 
               {/* Contenedor Iframe con la URL real de Calendly */}
+              {/* Contenedor Iframe con la URL real de Calendly corregida */}
               <div className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner">
                 <iframe
-                  src="https://calendly.com/ventasrtproyectos/30min?embed_domain=rtproyectos.com&embed_type=Inline&primary_color=1f40af"
+                  src="https://calendly.com/ventasrtproyectos/15min?background_color=ffffff&text_color=0f172a&primary_color=3b82f6"
                   width="100%"
                   height="100%"
                   frameBorder="0"
                   title="Agendar llamada con Ejecutivo"
                 />
               </div>
+
             </div>
           ) : (
             /* ================= VISTA 3: THANK YOU SCREEN (POST AGENDAMIENTO) ================= */
