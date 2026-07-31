@@ -42,7 +42,6 @@ import sharpMX304WImg from '../assets/catalog/multifuncionales/sharpMX304W.PNG';
 
 
 // ESTRUCTURA DE DATOS DEL CATÁLOGO
-// ESTRUCTURA DE DATOS DEL CATÁLOGO
 const catalogCategories = [
   {
     id: 'laptops',
