@@ -188,8 +188,13 @@ export default function ContactModal({ isOpen, onClose }) {
               </div>
 
               {/* Formulario */}
-              {/* Formulario */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form 
+                onSubmit={handleSubmit}
+                data-coudibot="capture"
+                action="#"
+                method="POST"
+                className="space-y-4"
+              >
                 
                 {/* Grid Fila 1: Nombre (Izquierda) y Email (Derecha) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
