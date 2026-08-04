@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, BarChart2, Calendar, CheckCircle, Loader2 } from 'lucide-react';
 
@@ -54,6 +54,33 @@ export default function ContactModal({ isOpen, onClose }) {
 
 
   const [isScheduled, setIsScheduled] = useState(false);
+
+
+  // URL de Calendly con parámetros y redirect
+  const calendlyUrl = useMemo(() => {
+    const base = "https://calendly.com/ventasrtproyectos/15min";
+    // Limpiar teléfono: mantener solo dígitos y el signo + (formato E.164)
+    const cleanPhone = formData.telefono ? formData.telefono.replace(/[\s\-\(\)]/g, '') : '';
+    // URL de redirección (absoluta, con el basename)
+    const redirectUrl = window.location.origin + '/rt-landing/gracias';
+
+    const params = new URLSearchParams({
+      background_color: "ffffff",
+      text_color: "0f172a",
+      primary_color: "3b82f6",
+      name: formData.nombre || "",
+      email: formData.email || "",
+      phone: cleanPhone,   // o phone_number si prefieres
+      redirect_url: redirectUrl,
+    });
+
+    // Si quieres pasar campos adicionales (industria, mensaje) como datos adicionales en Calendly
+    // params.append('a1', formData.industria || '');
+    // params.append('a2', formData.mensaje || '');
+
+    return `${base}?${params.toString()}`;
+  }, [formData.nombre, formData.email, formData.telefono]);
+
 
   // Escuchador global de eventos de Calendly (Truco postMessage)
   useEffect(() => {
@@ -321,8 +348,9 @@ export default function ContactModal({ isOpen, onClose }) {
               {/* Contenedor Iframe con la URL real de Calendly */}
               {/* Contenedor Iframe con la URL real de Calendly corregida */}
               <div className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner">
+                
                 <iframe
-                  src="https://calendly.com/ventasrtproyectos/15min?background_color=ffffff&text_color=0f172a&primary_color=3b82f6"
+                  src={calendlyUrl}
                   width="100%"
                   height="100%"
                   frameBorder="0"

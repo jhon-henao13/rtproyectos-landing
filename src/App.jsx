@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -12,8 +13,9 @@ import TestimonialsCTA from './components/TestimonialsCTA';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 import ContactModal from './components/ContactModal';
+import Gracias from './components/Gracias';
 
-export default function App() {
+function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -21,47 +23,41 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-transparent font-sans antialiased selection:bg-brand-primary selection:text-white">
-      {/* Cabecera de Navegación Fija */}
       <Navbar onOpenModal={openModal} />
-      
-      {/* Cuerpo Principal */}
       <main className="relative min-h-screen">
         <Hero onOpenModal={openModal} />
         <Stats />
         <GridGallery />
         <LeasingCalculator />
-        
-        {/* Agrega id="catalogo" aquí */}
         <div id="catalogo">
           <EquipmentCatalog onOpenModal={openModal} />
         </div>
-
-        {/* Agrega id="beneficios" aquí */}
         <div id="beneficios">
           <ComparisonTable />
         </div>
-
-        {/* Agrega id="cobertura" aquí */}
         <div id="cobertura">
           <SectorSolutions onOpenModal={openModal} />
         </div>
-
-        {/* Agrega id="faq" aquí */}
         <div id="faq">
           <ZeroParosOperativos onOpenModal={openModal} />
         </div>
-
         <TestimonialsCTA onOpenModal={openModal} />
-        
-        {/* Botón WhatsApp Global */}
         <FloatingWhatsApp />
       </main>
-
-      {/* Footer Final */}
       <Footer />
-
-      {/* Modal Global de Cotización / Agendamiento */}
       <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
+}
+
+export default function App() {
+  const location = useLocation();
+
+  // Si la URL es /gracias, mostrar el componente de gracias
+  if (location.pathname === '/gracias') {
+    return <Gracias />;
+  }
+
+  // En cualquier otra ruta, mostrar la landing page
+  return <HomePage />;
 }
