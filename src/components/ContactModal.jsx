@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, BarChart2, CheckCircle, Loader2 } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import emailjs from '@emailjs/browser';
 
 const phoneInputStyles = `
   .phone-input-custom {
@@ -52,6 +53,12 @@ export default function ContactModal({ isOpen, onClose }) {
   const [isScheduled, setIsScheduled] = useState(false);
   const widgetRef = useRef(null);
   const isWidgetInitialized = useRef(false);
+
+
+  // Inicializar EmailJS con la Public Key
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   // Escuchar evento de Calendly (postMessage)
   useEffect(() => {
@@ -114,24 +121,50 @@ export default function ContactModal({ isOpen, onClose }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const payload = {
       ...formData,
-      fecha: new Date().toISOString(),
-      origen: 'Landing Page RT Proyectos',
+      fecha: new Date().toLocaleString('es-MX', {
+        timeZone: 'America/Mexico_City',
+        dateStyle: 'long',
+        timeStyle: 'short'
+      }),
+      origen: 'Formulario web RT Proyectos',
     };
 
     try {
-      // Envío a Google Sheets (backup)
+      // 1. Enviar a Google Sheets (backup)
       await fetch('https://script.google.com/macros/s/AKfycbz3wGlFC9hlkMFVwjrIJyrBCz5BShUTuP9nez_Ouj8XAzVUCVELafHhs4Ah46jDJ5aq/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+
+      // 2. Enviar notificación por EmailJS
+      const templateParams = {
+        nombre: formData.nombre,
+        email: formData.email,
+        telefono: formData.telefono,
+        industria: formData.industria,
+        mensaje: formData.mensaje || 'Sin mensaje',
+        fecha: payload.fecha,
+        to_email: 'contacto@rtproyectos.com,edgar.torres@rtproyectos.com,jorge.torres@rtproyectos.com,raul.mancera@rtproyectos.com',
+      };
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        templateParams,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('✅ Correo enviado con éxito a los destinatarios');
+
     } catch (error) {
       console.log('Error en registro:', error);
     } finally {
@@ -139,6 +172,8 @@ export default function ContactModal({ isOpen, onClose }) {
       setIsSubmitted(true);
     }
   };
+
+  
 
   const handleCloseModal = () => {
     onClose();
