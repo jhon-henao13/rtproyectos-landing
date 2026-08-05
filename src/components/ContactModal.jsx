@@ -153,7 +153,7 @@ export default function ContactModal({ isOpen, onClose }) {
         industria: formData.industria,
         mensaje: formData.mensaje || 'Sin mensaje',
         fecha: payload.fecha,
-        to_email: 'contacto@rtproyectos.com,edgar.torres@rtproyectos.com,jorge.torres@rtproyectos.com,raul.mancera@rtproyectos.com,jhonestiwarhenao@gmail.com',
+        to_email: 'contacto@rtproyectos.com,edgar.torres@rtproyectos.com,jorge.torres@rtproyectos.com,raul.mancera@rtproyectos.com,estiguar.dev.emails@gmail.com',
       };
 
       await emailjs.send(
