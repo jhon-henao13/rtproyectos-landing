@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, BarChart2, Calendar, CheckCircle, Loader2 } from 'lucide-react';
-
+import { X, BarChart2, CheckCircle, Loader2 } from 'lucide-react';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
-
 
 const phoneInputStyles = `
   .phone-input-custom {
@@ -51,55 +49,24 @@ export default function ContactModal({ isOpen, onClose }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-
   const [isScheduled, setIsScheduled] = useState(false);
+  const widgetRef = useRef(null);
+  const isWidgetInitialized = useRef(false);
 
-
-  // URL de Calendly con parámetros y redirect
-  const calendlyUrl = useMemo(() => {
-    const base = "https://calendly.com/ventasrtproyectos/15min";
-    // Limpiar teléfono: mantener solo dígitos y el signo + (formato E.164)
-    const cleanPhone = formData.telefono ? formData.telefono.replace(/[\s\-\(\)]/g, '') : '';
-    // URL de redirección (absoluta, con el basename)
-    const redirectUrl = window.location.origin + '/rt-landing/gracias';
-
-    const params = new URLSearchParams({
-      background_color: "ffffff",
-      text_color: "0f172a",
-      primary_color: "3b82f6",
-      name: formData.nombre || "",
-      email: formData.email || "",
-      phone: cleanPhone,   // o phone_number si prefieres
-      redirect_url: redirectUrl,
-    });
-
-    // Si quieres pasar campos adicionales (industria, mensaje) como datos adicionales en Calendly
-    // params.append('a1', formData.industria || '');
-    // params.append('a2', formData.mensaje || '');
-
-    return `${base}?${params.toString()}`;
-  }, [formData.nombre, formData.email, formData.telefono]);
-
-
-  // Escuchador global de eventos de Calendly (Truco postMessage)
+  // Escuchar evento de Calendly (postMessage)
   useEffect(() => {
     const handleCalendlyEvent = (e) => {
-      // Validar que el mensaje venga de Calendly y que contenga un evento
       if (e.origin && e.origin.includes('calendly.com') && e.data && e.data.event) {
         if (e.data.event === 'calendly.event_scheduled') {
           console.log('✅ Evento detectado: Cita agendada con éxito en Calendly');
-
-          // OPCIÓN A: Si tienes una página de gracias independiente (ej. /gracias o /thank-you)
-          // window.location.href = '/gracias'; 
-
-          // OPCIÓN B: Disparar evento a Google Tag Manager / Analytics / Meta Pixel
+          
+          // Disparar evento a GTM
           if (window.gtag) {
             window.gtag('event', 'conversion', { send_to: 'AGENDAMIENTO_CALENDLY' });
           }
-
-          // Mostrar la vista de confirmación/gracias dentro del modal
-          setIsScheduled(true);
+          
+          // Redirigir a la página de gracias
+          window.location.href = '/rt-landing/gracias';
         }
       }
     };
@@ -108,6 +75,40 @@ export default function ContactModal({ isOpen, onClose }) {
     return () => window.removeEventListener('message', handleCalendlyEvent);
   }, []);
 
+  // Inicializar el widget de Calendly cuando se muestra el modal
+  useEffect(() => {
+    if (isSubmitted && !isScheduled && !isWidgetInitialized.current) {
+      // Esperar a que el script de Calendly esté cargado
+      const initWidget = () => {
+        if (window.Calendly) {
+          // Limpiar teléfono para el prefill
+          const cleanPhone = formData.telefono ? formData.telefono.replace(/[\s\-\(\)]/g, '') : '';
+          
+          window.Calendly.initInlineWidget({
+            url: `https://calendly.com/ventasrtproyectos/15min?background_color=ffffff&text_color=0f172a&primary_color=3b82f6`,
+            parentElement: widgetRef.current,
+            prefill: {
+              name: formData.nombre || '',
+              email: formData.email || '',
+              phone: cleanPhone || '',
+              // Si tienes campos personalizados en Calendly:
+              // customAnswers: {
+              //   a1: formData.industria || '',
+              //   a2: formData.mensaje || '',
+              // }
+            },
+            utm: {}
+          });
+          isWidgetInitialized.current = true;
+        } else {
+          // Si el script no está cargado, esperar 500ms y reintentar
+          setTimeout(initWidget, 500);
+        }
+      };
+      
+      initWidget();
+    }
+  }, [isSubmitted, isScheduled, formData]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -124,38 +125,27 @@ export default function ContactModal({ isOpen, onClose }) {
     };
 
     try {
-      // 1. Envío principal a Google Sheets (Guarda en la hoja y dispara el correo a ventasrtproyectos@gmail.com)
+      // Envío a Google Sheets (backup)
       await fetch('https://script.google.com/macros/s/AKfycbz3wGlFC9hlkMFVwjrIJyrBCz5BShUTuP9nez_Ouj8XAzVUCVELafHhs4Ah46jDJ5aq/exec', {
         method: 'POST',
-        mode: 'no-cors', // Evita problemas de CORS con Google Apps Script
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-
-      // 2. Envío secundario en segundo plano a Coudibot CRM (Si falla, no bloquea al usuario)
-      try {
-        await fetch('https://api.coudibot.com/v1/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-      } catch (crmError) {
-        console.log('Coudibot CRM sincronizado en modo local o pendiente');
-      }
-
     } catch (error) {
       console.log('Error en registro:', error);
     } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true); // Pasa automáticamente a la vista del Calendly
+      setIsSubmitted(true);
     }
   };
 
   const handleCloseModal = () => {
     onClose();
-    // Reiniciar estado tras cerrar
     setTimeout(() => {
       setIsSubmitted(false);
+      setIsScheduled(false);
+      isWidgetInitialized.current = false;
       setFormData({ nombre: '', email: '', telefono: '', industria: 'Corporativo', mensaje: '' });
     }, 300);
   };
@@ -164,10 +154,8 @@ export default function ContactModal({ isOpen, onClose }) {
 
   return (
     <AnimatePresence>
-        <style>{phoneInputStyles}</style>
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-        
-        {/* Backdrop con Blur Premium */}
+      <style>{phoneInputStyles}</style>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -176,7 +164,6 @@ export default function ContactModal({ isOpen, onClose }) {
           className="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity"
         />
 
-        {/* Modal Card */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -184,8 +171,6 @@ export default function ContactModal({ isOpen, onClose }) {
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className="relative w-full max-w-2xl bg-white rounded-[28px] shadow-2xl overflow-hidden z-10 border border-slate-100 my-auto"
         >
-          
-          {/* Botón Cerrar (X) */}
           <button
             onClick={handleCloseModal}
             className="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-all cursor-pointer z-20"
@@ -195,26 +180,19 @@ export default function ContactModal({ isOpen, onClose }) {
           </button>
 
           {!isSubmitted ? (
-            /* ================= VISTA 1: FORMULARIO DE CAPTURA ================= */
             <div className="p-6 sm:p-10">
-              
-              {/* Header con Ícono y Aviso */}
               <div className="flex flex-col items-center text-center space-y-3 mb-6">
                 <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 shadow-sm">
                   <BarChart2 size={26} strokeWidth={2.5} />
                 </div>
-
                 <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                   Cotiza tus equipos
                 </h3>
-
-                {/* Banner Blue / Destacado según la referencia gráfica */}
                 <div className="w-full text-black text-xs sm:text-sm font-semibold py-2 px-4 rounded-xl shadow-sm">
                   Reserva una cita usando tu correo de empresa para agilizar el proceso.
                 </div>
               </div>
 
-              {/* Formulario */}
               <form 
                 onSubmit={handleSubmit}
                 data-coudibot="capture"
@@ -222,8 +200,6 @@ export default function ContactModal({ isOpen, onClose }) {
                 method="POST"
                 className="space-y-4"
               >
-                
-                {/* Grid Fila 1: Nombre (Izquierda) y Email (Derecha) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -239,7 +215,6 @@ export default function ContactModal({ isOpen, onClose }) {
                       className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white transition-all text-sm"
                     />
                   </div>
-
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Email de empresa
@@ -256,7 +231,6 @@ export default function ContactModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Grid Fila 2: Teléfono (Izquierda) e Industria (Derecha) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
@@ -271,7 +245,6 @@ export default function ContactModal({ isOpen, onClose }) {
                       className="phone-input-custom"
                     />
                   </div>
-
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       Industria / Sector
@@ -293,7 +266,6 @@ export default function ContactModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Campo Opcional Completo: ¿Qué buscas? */}
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     ¿Qué buscas? <span className="text-slate-400 font-normal lowercase">(opcional)</span>
@@ -308,7 +280,6 @@ export default function ContactModal({ isOpen, onClose }) {
                   />
                 </div>
 
-                {/* Botón Principal */}
                 <div className="pt-2">
                   <button
                     type="submit"
@@ -325,17 +296,13 @@ export default function ContactModal({ isOpen, onClose }) {
                     )}
                   </button>
                 </div>
-
               </form>
             </div>
-            
           ) : !isScheduled ? (
-            /* ================= VISTA 2: AGENDAMIENTO CALENDLY ================= */
             <div className="p-6 sm:p-8 text-center space-y-4">
               <div className="inline-flex p-3 bg-emerald-50 text-emerald-600 rounded-full mb-1">
                 <CheckCircle size={36} />
               </div>
-
               <div className="space-y-2 max-w-xl mx-auto">
                 <h3 className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
                   Elige la Fecha y Hora para tu Asesoría
@@ -344,28 +311,16 @@ export default function ContactModal({ isOpen, onClose }) {
                   Selecciona en el calendario de abajo el espacio que mejor se adapte a tu agenda.
                 </p>
               </div>
-
-              {/* Contenedor Iframe con la URL real de Calendly */}
-              {/* Contenedor Iframe con la URL real de Calendly corregida */}
-              <div className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner">
-                
-                <iframe
-                  src={calendlyUrl}
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  title="Agendar llamada con Ejecutivo"
-                />
-              </div>
-
+              <div 
+                ref={widgetRef} 
+                className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 mt-4 shadow-inner"
+              />
             </div>
           ) : (
-            /* ================= VISTA 3: THANK YOU SCREEN (POST AGENDAMIENTO) ================= */
             <div className="p-8 sm:p-12 text-center space-y-6">
               <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full shadow-lg shadow-emerald-500/20 animate-bounce">
                 <CheckCircle size={48} strokeWidth={2.5} />
               </div>
-
               <div className="space-y-3 max-w-lg mx-auto">
                 <span className="text-xs font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200 inline-block">
                   Cita Confirmada
@@ -377,7 +332,6 @@ export default function ContactModal({ isOpen, onClose }) {
                   Hemos enviado los detalles de la reunión y la invitación a tu correo electrónico. Un ejecutivo de nuestro equipo se conectará puntualmente a la sesión.
                 </p>
               </div>
-
               <div className="pt-4 border-t border-slate-100">
                 <button
                   type="button"
@@ -389,7 +343,6 @@ export default function ContactModal({ isOpen, onClose }) {
               </div>
             </div>
           )}
-
         </motion.div>
       </div>
     </AnimatePresence>
