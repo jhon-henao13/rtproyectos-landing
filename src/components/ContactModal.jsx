@@ -138,7 +138,7 @@ export default function ContactModal({ isOpen, onClose }) {
 
     try {
       // 1. Enviar a Google Sheets (backup)
-      await fetch('https://script.google.com/macros/s/AKfycbz3wGlFC9hlkMFVwjrIJyrBCz5BShUTuP9nez_Ouj8XAzVUCVELafHhs4Ah46jDJ5aq/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbw5oBijvgJVe7qoomPrLHoUjo-dxpRFHFUNloenCG1mmhBXMHkJO44mptyjtJojWOZh/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
